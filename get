@@ -1,0 +1,21 @@
+#!/bin/bash -eu
+
+version=$(curl -s "https://api.github.com/repos/${1}/releases/latest" | grep tag_name | cut -d ':' -f 2 | cut -c 3- | rev | cut -c 3- | rev)
+
+set $(printf ${1} | tr '/' ' ')
+username=${1}
+name=${2}
+
+ostype=$(uname | tr '[A-Z]' '[a-z]')
+case $(uname -m) in
+  'x86_64') arch='amd64';;
+  'i386') arch='386';;
+  *) printf "$(uname -m) is undefined.\n"; exit 1;;
+esac
+
+url=https://github.com/${username}/${name}/releases/download/${version}/${name}_${ostype}_${arch}.zip
+printf "${url}\n"
+curl -LO ${url}
+unzip ${name}_${ostype}_${arch}.zip -d /usr/local/bin ${name}
+rm ${name}_${ostype}_${arch}.zip
+
