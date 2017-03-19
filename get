@@ -13,9 +13,8 @@ case $(uname -m) in
   *) printf "$(uname -m) is undefined.\n"; exit 1;;
 esac
 
-url=https://github.com/${username}/${name}/releases/download/${version}/${name}_${ostype}_${arch}.zip
+url=https://github.com/${username}/${name}/releases/download/${version}/${name}_${ostype}-${arch}.zip
 printf "${url}\n"
 curl -LO ${url}
-unzip ${name}_${ostype}_${arch}.zip -d /usr/local/bin ${name}
-rm ${name}_${ostype}_${arch}.zip
-
+unzip ${name}_${ostype}-${arch}.zip -d /usr/local/bin ${name}
+rm ${name}_${ostype}-${arch}.zip
